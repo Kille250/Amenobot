@@ -1,7 +1,6 @@
-package commands.profile;
+package commands.Owner;
 
-import Database.Content;
-import Database.SQLManager;
+import Database.LiteSQL;
 import commands.Command;
 import commands.CommandType;
 import commands.EmbedManager;
@@ -9,9 +8,10 @@ import commands.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 
-public class Register implements Command {
+public class DBexecute implements Command {
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
         return false;
@@ -19,37 +19,46 @@ public class Register implements Command {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws ParseException, IOException {
-        if(SQLManager.profileDataGet(event.getAuthor().getId()) == null){
-            if(SQLManager.profileSetData(event.getAuthor(), "", Content.NONE)){
-                event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(),"Datensätze erfolgreich in die Datenbank eingespeichert.")).queue();
-            } else{
-                event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(),"Ich hasse Programmieren.")).queue();
+
+        String query = "";
+
+        for(String str : args){
+            if(str.equals(args[args.length-1])){
+                query += str;
+                break;
             }
+            query += str+" ";
+        }
+
+        try {
+            LiteSQL.onUpdate(query);
+            event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "SQL wurde ausgeführt.")).queue();
+        } catch (SQLException e){
+            event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "SQL ist invalide.")).queue();
         }
     }
 
     @Override
     public void executed(boolean success, MessageReceivedEvent event) {
-
     }
 
     @Override
     public String help() {
-        return null;
+        return "";
     }
 
     @Override
     public String description() {
-        return "Hiermit registrierst du dich du Hurensohn.";
+        return "Dient zum Ausführen der SQL-Scripte.";
     }
 
     @Override
     public Enum<CommandType> commandType() {
-        return CommandType.ACCOUNT;
+        return CommandType.OWNER;
     }
 
     @Override
     public Enum<Permission> permission() {
-        return Permission.MEMBER;
+        return Permission.BOTOWNER;
     }
 }

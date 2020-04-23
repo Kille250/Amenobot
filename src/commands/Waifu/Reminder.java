@@ -1,18 +1,14 @@
 package commands.Waifu;
 
 import commands.Command;
+import commands.CommandType;
 import commands.EmbedManager;
+import commands.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.apache.commons.collections4.KeyValue;
-import org.jetbrains.annotations.Async;
 
 import java.io.IOException;
-import java.security.KeyPair;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Reminder implements Command {
@@ -35,16 +31,15 @@ public class Reminder implements Command {
     public void action(String[] args, MessageReceivedEvent event) throws ParseException, IOException {
         if(args.length==1){
             if(event.getGuild().getTextChannelsByName(args[0], true).toArray().length > 0){
-
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        event.getGuild().getTextChannelsByName(args[0],true).get(0).sendMessage(EmbedManager.response(event.getAuthor(),"@everyone Kommt Rollen ihr Wichser.")).queue();
-                    }
-                }, schedule().getTime(), 1000*60*60);
-
                 if(timerList.isEmpty()){
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            event.getGuild().getTextChannelsByName(args[0],true).get(0).sendMessage(EmbedManager.response(event.getAuthor(),"@everyone Kommt Rollen ihr Wichser.")).queue();
+                        }
+                    }, schedule().getTime(), 1000*60*60);
+
                     ArrayList allTimers = new ArrayList();
                     allTimers.add(timer);
                     timerList.put(event.getAuthor(), allTimers);
@@ -74,16 +69,16 @@ public class Reminder implements Command {
 
     @Override
     public String description() {
-        return null;
+        return "Hiermit wird der stündliche Reminder zum Bitches ziehen aktiviert.";
     }
 
     @Override
-    public String commandType() {
-        return null;
+    public Enum<CommandType> commandType() {
+        return CommandType.OWNER;
     }
 
     @Override
-    public int permission() {
-        return 0;
+    public Enum<Permission> permission() {
+        return Permission.BOTOWNER;
     }
 }

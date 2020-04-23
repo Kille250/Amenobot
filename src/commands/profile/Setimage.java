@@ -3,7 +3,9 @@ package commands.profile;
 import Database.Content;
 import Database.SQLManager;
 import commands.Command;
+import commands.CommandType;
 import commands.EmbedManager;
+import commands.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.imageio.ImageIO;
@@ -20,6 +22,7 @@ public class Setimage implements Command {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) throws ParseException, IOException {
+
         if(args.length <1){
             event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "Du musst noch eine beschissene direkte URL angeben, Bastard.")).queue();
         } else{
@@ -34,7 +37,7 @@ public class Setimage implements Command {
                     event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "Stirb doch einfach.")).queue();
                 }
             } catch (IOException e){
-                     event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "URL oder was auch immer das ist nicht valide.")).queue();
+                event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "URL oder was auch immer das ist nicht valide.")).queue();
             }
         }
     }
@@ -51,16 +54,16 @@ public class Setimage implements Command {
 
     @Override
     public String description() {
-        return null;
+        return "Hiermit änderst du dein Bild das sich auf dein Profil befinden.";
     }
 
     @Override
-    public String commandType() {
-        return null;
+    public Enum<CommandType> commandType() {
+        return CommandType.ACCOUNT;
     }
 
     @Override
-    public int permission() {
-        return 0;
+    public Enum<Permission> permission() {
+        return Permission.MEMBER;
     }
 }

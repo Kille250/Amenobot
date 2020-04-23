@@ -11,6 +11,6 @@ public interface Command {
     void executed(boolean success, MessageReceivedEvent event);
     String help();
     String description();
-    String commandType();
-    int permission();
+    Enum<CommandType> commandType();
+    Enum<Permission> permission();
 }

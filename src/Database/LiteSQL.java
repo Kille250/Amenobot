@@ -43,12 +43,8 @@ public class LiteSQL {
         return false;
     }
 
-    public static void onUpdate(String sql){
-        try {
+    public static void onUpdate(String sql) throws SQLException{
             stmt.execute(sql);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
     }
 

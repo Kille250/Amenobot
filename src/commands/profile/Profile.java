@@ -2,9 +2,9 @@ package commands.profile;
 
 import Database.SQLManager;
 import commands.Command;
+import commands.CommandType;
 import commands.EmbedManager;
-import core.CommandParser;
-import net.dv8tion.jda.api.EmbedBuilder;
+import commands.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.io.IOException;
@@ -35,21 +35,23 @@ public class Profile implements Command {
 
     @Override
     public String help() {
-        return null;
+
+        return "Zeigt dir dein Profil an. Falls do noch keinen hast, dann tipp !register.";
     }
 
     @Override
     public String description() {
-        return null;
+
+        return "Zeigt dir dein Profil an. Falls do noch keinen hast, dann tipp !register.";
     }
 
     @Override
-    public String commandType() {
-        return null;
+    public Enum<CommandType> commandType() {
+        return CommandType.ACCOUNT;
     }
 
     @Override
-    public int permission() {
-        return 0;
+    public Enum permission() {
+        return Permission.MEMBER;
     }
 }

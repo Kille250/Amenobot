@@ -3,12 +3,14 @@ package core;
 import Database.LiteSQL;
 import Database.SQLManager;
 import Listener.BotListener;
+import commands.Meme.Memeadd;
+import commands.Meme.Memeget;
 import commands.Waifu.Reminder;
+import commands.profile.Help;
 import commands.profile.Profile;
 import commands.profile.Register;
 import commands.profile.Setimage;
-import commands.test.Test;
-import core.CommandParser;
+import commands.Owner.DBexecute;
 import net.dv8tion.jda.api.*;
 import commands.Command;
 import net.dv8tion.jda.api.entities.Activity;
@@ -21,7 +23,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
-import commands.*;
 
 public class Main {
     static JDABuilder builder;
@@ -33,11 +34,12 @@ public class Main {
     public static JDA jda;
 
     public static void main(String[] args){
+        System.setProperty("http.keepAlive", "false");
         LiteSQL.connect();
         SQLManager.onCreate();
 
         builder = new JDABuilder(AccountType.BOT)
-                .setToken("NzAyNjc5NjQ0MjUxNDg4Mjg3.XqDjcA.mwGYmRFxRaiSRq2o9NZTWapIHdE")
+                .setToken("")
                 .setAutoReconnect(true)
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.streaming("nigpro records", "https://twitch.tv/nigpro"));
@@ -57,16 +59,19 @@ public class Main {
     }
 
     private static void initiliazeCommands(){
-        commands.put("test", new Test());
         commands.put("reminder", new Reminder());
         commands.put("profile", new Profile());
         commands.put("register", new Register());
         commands.put("setimage", new Setimage());
+        commands.put("dbexecute", new DBexecute());
+        commands.put("help", new Help());
+        commands.put("memeadd", new Memeadd());
+        commands.put("meme", new Memeget());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd) throws ParseException, IOException {
 
-        if (commands.containsKey(cmd.invoke.toLowerCase())) {
+        if (commands.containsKey(cmd.invoke.toLowerCase()) && cmd.raw.startsWith("!")) {
             boolean safe = commands.get(cmd.invoke.toLowerCase()).called(cmd.args, cmd.event);
 
             if (!safe) {
