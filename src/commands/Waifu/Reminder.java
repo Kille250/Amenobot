@@ -1,6 +1,7 @@
 package commands.Waifu;
 
 import commands.Command;
+import commands.EmbedManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -39,7 +40,7 @@ public class Reminder implements Command {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        event.getGuild().getTextChannelsByName(args[0],true).get(0).sendMessage("@everyone Kommt Rollen ihr Wichser.").tts(true).queue();
+                        event.getGuild().getTextChannelsByName(args[0],true).get(0).sendMessage(EmbedManager.response(event.getAuthor(),"@everyone Kommt Rollen ihr Wichser.")).queue();
                     }
                 }, schedule().getTime(), 1000*60*60);
 
@@ -47,16 +48,16 @@ public class Reminder implements Command {
                     ArrayList allTimers = new ArrayList();
                     allTimers.add(timer);
                     timerList.put(event.getAuthor(), allTimers);
-                    event.getChannel().sendMessage("Der Timer mit der 'ID 1' wurde gesetzt.").queue();
+                    event.getChannel().sendMessage(EmbedManager.response(event.getAuthor(),"Der Timer wurde erstellt.")).queue();
                 } else{
-                    event.getChannel().sendMessage("Mehrere Timers werden derzeit nicht unterstuetzt.").queue();
+                    event.getChannel().sendMessage(EmbedManager.response(event.getAuthor(),"Mehrere Timers werden derzeit nicht unterstuetzt.")).queue();
                 }
 
             } else{
-                event.getTextChannel().sendMessage("Der Channel exisitiert nicht du Nutte.").queue();
+                event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(), "Der Channel exisitiert nicht du Nutte.")).queue();
             }
         } else{
-            event.getTextChannel().sendMessage("lmao fk off").queue();
+            event.getTextChannel().sendMessage(EmbedManager.response(event.getAuthor(),"lmao fk off")).queue();
         }
 
     }

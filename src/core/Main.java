@@ -1,8 +1,12 @@
 package core;
 
 import Database.LiteSQL;
+import Database.SQLManager;
 import Listener.BotListener;
 import commands.Waifu.Reminder;
+import commands.profile.Profile;
+import commands.profile.Register;
+import commands.profile.Setimage;
 import commands.test.Test;
 import core.CommandParser;
 import net.dv8tion.jda.api.*;
@@ -30,9 +34,10 @@ public class Main {
 
     public static void main(String[] args){
         LiteSQL.connect();
+        SQLManager.onCreate();
 
         builder = new JDABuilder(AccountType.BOT)
-                .setToken("NzAxMTcwODIzNTMyMzgwMjAy.XptnUw.CnrBXQWMXlJHlLTwQheqBV4r7ks")
+                .setToken("NzAyNjc5NjQ0MjUxNDg4Mjg3.XqDjcA.mwGYmRFxRaiSRq2o9NZTWapIHdE")
                 .setAutoReconnect(true)
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.streaming("nigpro records", "https://twitch.tv/nigpro"));
@@ -54,6 +59,9 @@ public class Main {
     private static void initiliazeCommands(){
         commands.put("test", new Test());
         commands.put("reminder", new Reminder());
+        commands.put("profile", new Profile());
+        commands.put("register", new Register());
+        commands.put("setimage", new Setimage());
     }
 
     public static void handleCommand(CommandParser.CommandContainer cmd) throws ParseException, IOException {

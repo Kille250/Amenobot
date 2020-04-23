@@ -20,7 +20,7 @@ public class LiteSQL {
 
             String url = "jdbc:sqlite:"+file.getPath();
             conn = DriverManager.getConnection(url);
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
 
             return true;
 
